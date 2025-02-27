@@ -31,10 +31,21 @@ public class MathController {
     * Joao é capturado como o valor do parâmetro nome.
     */
    @RequestMapping(value = "/sum/{numOne}/{numTwo}", method = RequestMethod.GET)
-   public String sum(
+   public Double sum(
          @PathVariable(value = "numOne") String numOne,
-         @PathVariable(value = "numTwo") String numTwo) {
-      return numOne + " " + numTwo;
+         @PathVariable(value = "numTwo") String numTwo) throws Exception {
+      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+         throw new Exception();
+      }
+      return ConvetToDouble(numOne) + ConvetToDouble(numTwo);
+   }
+
+   private Double ConvetToDouble(String strNum) {
+      throw new UnsupportedOperationException("Unimplemented method 'ConvetToDouble'");
+   }
+
+   private boolean isNumeric(String strNum) {
+
    }
 
 }
