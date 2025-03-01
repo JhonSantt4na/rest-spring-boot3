@@ -1,7 +1,5 @@
 package com.santt4na.rest_springboot3.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,11 +39,20 @@ public class MathController {
    }
 
    private Double ConvetToDouble(String strNum) {
-      throw new UnsupportedOperationException("Unimplemented method 'ConvetToDouble'");
+      if (strNum == null)
+         return 0D;
+      String number = strNum.replaceAll(",", ".");
+      if (isNumeric(number)) {
+         return Double.parseDouble(number);
+      }
+      return 0D;
    }
 
    private boolean isNumeric(String strNum) {
-
+      if (strNum == null)
+         return false;
+      String number = strNum.replaceAll(",", ".");
+      return number.matches("[-+]?[0-9]*\\.?[0-9]+");
    }
 
 }
