@@ -1,6 +1,5 @@
 package com.santt4na.rest_springboot3.model;
 
-
 public class Greeting {
    private Long id;
    private String content;
