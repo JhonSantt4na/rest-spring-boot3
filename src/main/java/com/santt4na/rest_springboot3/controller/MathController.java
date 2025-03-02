@@ -1,11 +1,15 @@
 package com.santt4na.rest_springboot3.controller;
 
+//import java.util.concurrent.atomic.AtomicLong;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santt4na.rest_springboot3.exception.UnsupportedMathOperationException;
+import com.santt4na.rest_springboot3.math.SimpleMath;
+import com.santt4na.rest_springboot3.utils.NumberConverter;
 
 @RestController()
 public class MathController {
@@ -30,28 +34,32 @@ public class MathController {
     * ex: http://localhost:8080/usuarios?nome=Joao
     * Joao é capturado como o valor do parâmetro nome.
     */
+
+   // private final AtomicLong counter = new AtomicLong();
+   private SimpleMath math = new SimpleMath();
+
    @RequestMapping(value = "/sum/{numOne}/{numTwo}", method = RequestMethod.GET)
    public Double sum(
          @PathVariable(value = "numOne") String numOne,
          @PathVariable(value = "numTwo") String numTwo) throws Exception {
-      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+      if (!NumberConverter.isNumeric(numOne) || !NumberConverter.isNumeric(numTwo)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
-      return ConvetToDouble(numOne) + ConvetToDouble(numTwo);
+      return math.sum(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
    }
 
    @RequestMapping(value = "/sub/{numOne}/{numTwo}", method = RequestMethod.GET)
    public Double sub(
          @PathVariable(value = "numOne") String numOne,
          @PathVariable(value = "numTwo") String numTwo) throws Exception {
-      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+      if (!NumberConverter.isNumeric(numOne) || !NumberConverter.isNumeric(numTwo)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
 
-      if (ConvetToDouble(numOne) < ConvetToDouble(numTwo)) {
-         return ConvetToDouble(numTwo) - ConvetToDouble(numOne);
+      if (NumberConverter.ConvetToDouble(numOne) < NumberConverter.ConvetToDouble(numTwo)) {
+         return math.sub(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
       } else {
-         return ConvetToDouble(numOne) - ConvetToDouble(numTwo);
+         return math.sub(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
       }
    }
 
@@ -59,57 +67,38 @@ public class MathController {
    public Double mul(
          @PathVariable(value = "numOne") String numOne,
          @PathVariable(value = "numTwo") String numTwo) throws Exception {
-      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+      if (!NumberConverter.isNumeric(numOne) || !NumberConverter.isNumeric(numTwo)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
-      return ConvetToDouble(numOne) * ConvetToDouble(numTwo);
+      return math.mul(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
    }
 
    @RequestMapping(value = "/div/{numOne}/{numTwo}", method = RequestMethod.GET)
    public Double div(
          @PathVariable(value = "numOne") String numOne,
          @PathVariable(value = "numTwo") String numTwo) throws Exception {
-      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+      if (!NumberConverter.isNumeric(numOne) || !NumberConverter.isNumeric(numTwo)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
-      return ConvetToDouble(numOne) / ConvetToDouble(numTwo);
+      return math.div(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
    }
 
    @RequestMapping(value = "/med/{numOne}/{numTwo}", method = RequestMethod.GET)
    public Double med(
          @PathVariable(value = "numOne") String numOne,
          @PathVariable(value = "numTwo") String numTwo) throws Exception {
-      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+      if (!NumberConverter.isNumeric(numOne) || !NumberConverter.isNumeric(numTwo)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
-      Double soma = ConvetToDouble(numOne) + ConvetToDouble(numTwo);
-      return soma / 2;
+      return math.med(NumberConverter.ConvetToDouble(numOne), NumberConverter.ConvetToDouble(numTwo));
    }
 
    @RequestMapping(value = "/raiz/{number}", method = RequestMethod.GET)
    public Double med(
          @PathVariable(value = "number") String number) throws Exception {
-      if (!isNumeric(number)) {
+      if (!NumberConverter.isNumeric(number)) {
          throw new UnsupportedMathOperationException("Please set a numeric value");
       }
-      return Math.sqrt(ConvetToDouble(number));
+      return math.raiz(NumberConverter.ConvetToDouble(number));
    }
-
-   private Double ConvetToDouble(String strNum) {
-      if (strNum == null)
-         return 0D;
-      String number = strNum.replaceAll(",", ".");
-      if (isNumeric(number)) {
-         return Double.parseDouble(number);
-      }
-      return 0D;
-   }
-
-   private boolean isNumeric(String strNum) {
-      if (strNum == null)
-         return false;
-      String number = strNum.replaceAll(",", ".");
-      return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-   }
-
 }
