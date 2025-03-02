@@ -40,6 +40,61 @@ public class MathController {
       return ConvetToDouble(numOne) + ConvetToDouble(numTwo);
    }
 
+   @RequestMapping(value = "/sub/{numOne}/{numTwo}", method = RequestMethod.GET)
+   public Double sub(
+         @PathVariable(value = "numOne") String numOne,
+         @PathVariable(value = "numTwo") String numTwo) throws Exception {
+      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+         throw new UnsupportedMathOperationException("Please set a numeric value");
+      }
+
+      if (ConvetToDouble(numOne) < ConvetToDouble(numTwo)) {
+         return ConvetToDouble(numTwo) - ConvetToDouble(numOne);
+      } else {
+         return ConvetToDouble(numOne) - ConvetToDouble(numTwo);
+      }
+   }
+
+   @RequestMapping(value = "/mul/{numOne}/{numTwo}", method = RequestMethod.GET)
+   public Double mul(
+         @PathVariable(value = "numOne") String numOne,
+         @PathVariable(value = "numTwo") String numTwo) throws Exception {
+      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+         throw new UnsupportedMathOperationException("Please set a numeric value");
+      }
+      return ConvetToDouble(numOne) * ConvetToDouble(numTwo);
+   }
+
+   @RequestMapping(value = "/div/{numOne}/{numTwo}", method = RequestMethod.GET)
+   public Double div(
+         @PathVariable(value = "numOne") String numOne,
+         @PathVariable(value = "numTwo") String numTwo) throws Exception {
+      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+         throw new UnsupportedMathOperationException("Please set a numeric value");
+      }
+      return ConvetToDouble(numOne) / ConvetToDouble(numTwo);
+   }
+
+   @RequestMapping(value = "/med/{numOne}/{numTwo}", method = RequestMethod.GET)
+   public Double med(
+         @PathVariable(value = "numOne") String numOne,
+         @PathVariable(value = "numTwo") String numTwo) throws Exception {
+      if (!isNumeric(numOne) || !isNumeric(numTwo)) {
+         throw new UnsupportedMathOperationException("Please set a numeric value");
+      }
+      Double soma = ConvetToDouble(numOne) + ConvetToDouble(numTwo);
+      return soma / 2;
+   }
+
+   @RequestMapping(value = "/raiz/{number}", method = RequestMethod.GET)
+   public Double med(
+         @PathVariable(value = "number") String number) throws Exception {
+      if (!isNumeric(number)) {
+         throw new UnsupportedMathOperationException("Please set a numeric value");
+      }
+      return Math.sqrt(ConvetToDouble(number));
+   }
+
    private Double ConvetToDouble(String strNum) {
       if (strNum == null)
          return 0D;
