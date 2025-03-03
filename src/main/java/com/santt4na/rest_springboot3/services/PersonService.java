@@ -1,0 +1,53 @@
+package com.santt4na.rest_springboot3.services;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
+
+import org.springframework.stereotype.Service;
+
+import com.santt4na.rest_springboot3.model.Person;
+
+@Service
+public class PersonService {
+
+   private final AtomicLong counter = new AtomicLong();
+   private Logger logger = Logger.getLogger(PersonService.class.getName());
+
+   public List<Person> findAll() {
+      List<Person> persons = new ArrayList<>();
+
+      for (int i = 0; i < 8; i++) {
+         Person person = mockPerson(i);
+         persons.add(person);
+      }
+
+      return persons;
+   }
+
+   public Person findById(String id) {
+      logger.info("Finding One Person");
+
+      // Mock de um Person enquanto n temo o banco de dados
+      Person person = new Person();
+      person.setId(counter.incrementAndGet());
+      person.setFirstName("Jorge");
+      person.setLastName("Santt4na");
+      person.setAddress("Brazil");
+      person.setGender("Male");
+
+      return person;
+   }
+
+   private Person mockPerson(int i) {
+
+      Person person = new Person();
+      person.setId(counter.incrementAndGet());
+      person.setFirstName("Person Name: " + i);
+      person.setLastName("Person LastName: " + i);
+      person.setAddress("Some address in Brasil" + i);
+      person.setGender("Male");
+      return person;
+   }
+}
