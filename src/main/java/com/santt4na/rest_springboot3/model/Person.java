@@ -2,13 +2,50 @@ package com.santt4na.rest_springboot3.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+/*
+ * @Entity -> Indica que esta classe é uma entidade JPA mapeada para uma tabela no banco de dados
+ * 
+ * @Table(name = "person")-> Define o nome da tabela no banco de dados como "person"
+ * 
+ * @Id -> // Especifica que este campo é a chave primária da entidade
+ *
+ *  @GeneratedValue(strategy = GenerationType.IDENTITY) {
+ *    * Configura a geração automática do valor da chave primária
+ *    * (ex: auto_increment no MySQL).
+ *    *Outras estratégias: SEQUENCE, TABLE, AUTO.
+ * }
+ * 
+ * @Column(name = "first_name", ->  Mapeia o campo para a coluna "first_name"
+ *          nullable = false,   ->  com restrição NOT NULL
+ *          length = 80)        ->  tamanho máximo de 80 caracteres
+ */
+
+@Entity
+@Table(name = "person")
 public class Person implements Serializable {
    private static final long serialVersionUID = 1L;
 
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Column(name = "first_name", nullable = false, length = 80)
    private String firstName;
+
+   @Column(name = "last_name", nullable = false, length = 80)
    private String lastName;
+
+   @Column(nullable = false, length = 100)
    private String address;
+
+   @Column(nullable = false, length = 6)
    private String gender;
 
    public Person() {

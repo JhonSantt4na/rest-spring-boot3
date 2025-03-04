@@ -1,68 +1,63 @@
 package com.santt4na.rest_springboot3.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.santt4na.rest_springboot3.exception.ResouseNotFoundException;
 import com.santt4na.rest_springboot3.model.Person;
+import com.santt4na.rest_springboot3.repository.PersonRepository;
 
 @Service
 public class PersonService {
 
-   private final AtomicLong counter = new AtomicLong();
+   @Autowired
+   PersonRepository repository;
+
+   // private final AtomicLong counter = new AtomicLong();
    private Logger logger = Logger.getLogger(PersonService.class.getName());
 
    public List<Person> findAll() {
-      List<Person> persons = new ArrayList<>();
-
-      for (int i = 0; i < 8; i++) {
-         Person person = mockPerson(i);
-         persons.add(person);
-      }
-
-      return persons;
+      logger.info("Finding all people!");
+      return repository.findAll();
    }
 
-   public Person findById(String id) {
+   public Person findById(Long id) {
       logger.info("Finding One Person");
+      return repository.findById(id)
+            .orElseThrow(() -> new ResouseNotFoundException("No Records Found for this ID"));
 
-      // Mock de um Person enquanto n temo o banco de dados
-      Person person = new Person();
-      person.setId(counter.incrementAndGet());
-      person.setFirstName("Jorge");
-      person.setLastName("Santt4na");
-      person.setAddress("Brazil");
-      person.setGender("Male");
-
-      return person;
    }
 
    public Person create(Person person) {
-
       logger.info("Creating one Person!");
-      return person;
+      return repository.save(person);
+
    }
 
    public Person update(Person person) {
       logger.info("Updated one Person!");
-      return person;
+
+      var entity = repository.findById(person.getId())
+            .orElseThrow(() -> new ResouseNotFoundException("No Records Found for this ID"));
+
+      entity.setFirstName(person.getFirstName());
+      entity.setLastName(person.getLastName());
+      entity.setAddress(person.getAddress());
+      entity.setGender(person.getGender());
+
+      return repository.save(entity);
+
    }
 
-   private Person mockPerson(int i) {
-
-      Person person = new Person();
-      person.setId(counter.incrementAndGet());
-      person.setFirstName("Person Name: " + i);
-      person.setLastName("Person LastName: " + i);
-      person.setAddress("Some address in Brasil" + i);
-      person.setGender("Male");
-      return person;
-   }
-
-   public void delete(String id) {
+   public void delete(Long id) {
       logger.info("Deleted one Person!");
+
+      var entity = repository.findById(id)
+            .orElseThrow(() -> new ResouseNotFoundException("No Records Found for this ID"));
+
+      repository.delete(entity);
    }
 }

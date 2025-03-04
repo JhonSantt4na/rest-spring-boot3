@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.santt4na.rest_springboot3.exception.ExceptionResponse;
-import com.santt4na.rest_springboot3.exception.UnsupportedMathOperationException;
+import com.santt4na.rest_springboot3.exception.ResouseNotFoundException;
 
 @ControllerAdvice // Sempre que precisamos concentra tudo em um unico controller
 @RestController
@@ -28,12 +28,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
    }
 
    // Tratando a Nossa Exception
-   @ExceptionHandler(UnsupportedMathOperationException.class) // Qual Exception ele vai tratar
-   public final ResponseEntity<ExceptionResponse> handleBadRequestExecptions(Exception ex, WebRequest request) {
+   @ExceptionHandler(ResouseNotFoundException.class) // Qual Exception ele vai tratar
+   public final ResponseEntity<ExceptionResponse> handleNotFoundExecptions(Exception ex, WebRequest request) {
       ExceptionResponse exceptionResponse = new ExceptionResponse(
             new Date(),
             ex.getMessage(),
             request.getDescription(false));
-      return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
    }
 }
