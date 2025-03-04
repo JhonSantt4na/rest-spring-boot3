@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,25 @@ public class PersonController {
          throw new Exception("Person no can be null");
       }
       return person;
+   }
+
+   @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, // Produz JSON
+         consumes = MediaType.APPLICATION_JSON_VALUE // Consume um JSON
+   )
+   public Person create(@RequestBody Person person) throws Exception {
+      return service.create(person);
+   }
+
+   @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, // Produz JSON
+         consumes = MediaType.APPLICATION_JSON_VALUE // Consume um JSON
+   )
+   public Person update(@RequestBody Person person) {
+      return service.update(person);
+   }
+
+   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   public void delete(@PathVariable(value = "id") String id) {
+      service.delete(id);
    }
 
 }

@@ -40,6 +40,17 @@ public class PersonService {
       return person;
    }
 
+   public Person create(Person person) {
+
+      logger.info("Creating one Person!");
+      return person;
+   }
+
+   public Person update(Person person) {
+      logger.info("Updated one Person!");
+      return person;
+   }
+
    private Person mockPerson(int i) {
 
       Person person = new Person();
@@ -49,5 +60,9 @@ public class PersonService {
       person.setAddress("Some address in Brasil" + i);
       person.setGender("Male");
       return person;
+   }
+
+   public void delete(String id) {
+      logger.info("Deleted one Person!");
    }
 }
